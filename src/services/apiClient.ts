@@ -1,8 +1,8 @@
-// const API_BASE_URL = '/api';
-// if (typeof window !== 'undefined') {
-//   console.log('Hostname:', window.location.hostname);
-//   console.log('Port:', window.location.port);
-//   console.log('API Base URL:', API_BASE_URL);
+// const API_BASE_URL = "/api";
+// if (typeof window !== "undefined") {
+//   console.log("Hostname:", window.location.hostname);
+//   console.log("Port:", window.location.port);
+//   console.log("API Base URL:", API_BASE_URL);
 // }
 
 const API_BASE_URL = "https://testmode-7arz.onrender.com/api";

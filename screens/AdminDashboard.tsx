@@ -1,45 +1,84 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Dashboard from '../components/admin/Dashboard';
-import MiscSection from '../components/admin/MiscSection';
-import Students from '../components/admin/Students';
-import Store from '../components/admin/store/StoreManagement';
-import Institute from '../components/admin/Institute';
-import Questions from '../components/admin/Questions';
-import Passages from '../components/admin/Passages';
-import Tests from '../components/admin/Tests';
-import SubjectiveTest from '../components/admin/SubjectiveTest';
-import TestSeries from '../components/admin/TestSeries';
-import AllReports from '../components/admin/AllReports';
-import Videos from '../components/admin/Videos';
-import VideoSeries from '../components/admin/VideoSeries';
-import LiveVideos from '../components/admin/LiveVideos';
-import PDFs from '../components/admin/PDFs';
-import Packages from '../components/admin/Packages';
-import Messages from '../components/admin/Messages';
-import Blog from '../components/admin/Blog';
-import Settings from '../components/admin/Settings';
-import Banners from '../components/admin/Banners';
-import Buyers from '../components/admin/shopping/Buyers';
-import Tokens from '../components/admin/shopping/Tokens';
-import Coupons from '../components/admin/shopping/Coupons';
-import Courses from '../components/admin/misc/Courses';
-import QuickLinks from '../components/admin/QuickLinks';
-import CourseContentManager from '../components/admin/CourseContentManager';
-import LiveClassScheduler from '../components/admin/LiveClassScheduler';
-import SubCourses from '../components/admin/misc/SubCourses';
-import Subjects from '../components/admin/misc/Subjects';
-import Topics from '../components/admin/misc/Topics';
-import Instructions from '../components/admin/misc/Instructions';
-import ExamDocuments from '../components/admin/misc/ExamDocuments';
-import GlobalNews from '../components/admin/misc/GlobalNews';
-import PushNotifications from '../components/admin/misc/PushNotifications';
-import Categories from '../components/admin/Categories';
-import Referrals from '../components/admin/Referrals';
-import ChatSupport from '../components/admin/ChatSupport';
-import LiveSessions from '../components/admin/LiveSessions';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Dashboard from "../components/admin/Dashboard";
+import MiscSection from "../components/admin/MiscSection";
+import Students from "../components/admin/Students";
+import Store from "../components/admin/store/StoreManagement";
+import Institute from "../components/admin/Institute";
+import Questions from "../components/admin/Questions";
+import Passages from "../components/admin/Passages";
+import Tests from "../components/admin/Tests";
+import SubjectiveTest from "../components/admin/SubjectiveTest";
+import TestSeries from "../components/admin/TestSeries";
+import AllReports from "../components/admin/AllReports";
+import Videos from "../components/admin/Videos";
+import VideoSeries from "../components/admin/VideoSeries";
+import LiveVideos from "../components/admin/LiveVideos";
+import PDFs from "../components/admin/PDFs";
+import Packages from "../components/admin/Packages";
+import Messages from "../components/admin/Messages";
+import Blog from "../components/admin/Blog";
+import Settings from "../components/admin/Settings";
+import Banners from "../components/admin/Banners";
+import Buyers from "../components/admin/shopping/Buyers";
+import Tokens from "../components/admin/shopping/Tokens";
+import Coupons from "../components/admin/shopping/Coupons";
+import Courses from "../components/admin/misc/Courses";
+import QuickLinks from "../components/admin/QuickLinks";
+import CourseContentManager from "../components/admin/CourseContentManager";
+import LiveClassScheduler from "../components/admin/LiveClassScheduler";
+import SubCourses from "../components/admin/misc/SubCourses";
+import Subjects from "../components/admin/misc/Subjects";
+import Topics from "../components/admin/misc/Topics";
+import Instructions from "../components/admin/misc/Instructions";
+import ExamDocuments from "../components/admin/misc/ExamDocuments";
+import GlobalNews from "../components/admin/misc/GlobalNews";
+import PushNotifications from "../components/admin/misc/PushNotifications";
+import Categories from "../components/admin/Categories";
+import Referrals from "../components/admin/Referrals";
+import ChatSupport from "../components/admin/ChatSupport";
+import LiveSessions from "../components/admin/LiveSessions";
 
-export type AdminView = 'dashboard' | 'students' | 'buyers' | 'tokens' | 'coupons' | 'store' | 'institute' | 'questions' | 'question-bank' | 'passages' | 'tests' | 'subjective-test' | 'test-series' | 'all-reports' | 'videos' | 'video-series' | 'live-videos' | 'live-sessions' | 'pdfs' | 'packages' | 'messages' | 'blog' | 'settings' | 'banners' | 'courses' | 'course-content' | 'live-class-scheduler' | 'subcourses' | 'subjects' | 'topics' | 'instructions' | 'exam-documents' | 'global-news' | 'quick-links' | 'push-notifications' | 'categories' | 'misc' | 'referrals' | 'chat-support';
+export type AdminView =
+  | "dashboard"
+  | "students"
+  | "buyers"
+  | "tokens"
+  | "coupons"
+  | "store"
+  | "institute"
+  | "questions"
+  | "question-bank"
+  | "passages"
+  | "tests"
+  | "subjective-test"
+  | "test-series"
+  | "all-reports"
+  | "videos"
+  | "video-series"
+  | "live-videos"
+  | "live-sessions"
+  | "pdfs"
+  | "packages"
+  | "messages"
+  | "blog"
+  | "settings"
+  | "banners"
+  | "courses"
+  | "course-content"
+  | "live-class-scheduler"
+  | "subcourses"
+  | "subjects"
+  | "topics"
+  | "instructions"
+  | "exam-documents"
+  | "global-news"
+  | "quick-links"
+  | "push-notifications"
+  | "categories"
+  | "misc"
+  | "referrals"
+  | "chat-support";
 
 interface Props {
   setAuth: (val: boolean) => void;
@@ -55,152 +94,213 @@ interface MenuItem {
 
 const AdminDashboard: React.FC<Props> = ({ setAuth }) => {
   const navigate = useNavigate();
-  const [activeView, setActiveView] = useState<AdminView>('dashboard');
+  const [activeView, setActiveView] = useState<AdminView>("dashboard");
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [toast, setToast] = useState<{ msg: string; type: 'success' | 'error' } | null>(null);
+  const [toast, setToast] = useState<{
+    msg: string;
+    type: "success" | "error";
+  } | null>(null);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
-  const [selectedCourseForContent, setSelectedCourseForContent] = useState<any>(null);
+  const [selectedCourseForContent, setSelectedCourseForContent] =
+    useState<any>(null);
 
   const handleSelectCourseForContent = (course: any) => {
     setSelectedCourseForContent(course);
-    setActiveView('course-content');
+    setActiveView("course-content");
   };
 
-  const showToast = (msg: string, type: 'success' | 'error' = 'success') => {
+  const showToast = (msg: string, type: "success" | "error" = "success") => {
     setToast({ msg, type });
     setTimeout(() => setToast(null), 3000);
   };
 
   const menuItems: MenuItem[] = [
-    { id: 'dashboard', label: 'Dashboard', icon: 'grid_view', color: 'text-gray-700' },
     {
-      id: 'offerings',
-      label: 'Offerings',
-      icon: 'inventory_2',
-      color: 'text-gray-700',
-      submenu: [
-        { id: 'packages', label: 'Digital Products', icon: 'category' },
-        { id: 'store', label: 'Payment History', icon: 'receipt_long' },
-        { id: 'quick-links', label: 'Quick Links', icon: 'link' },
-        { id: 'pdfs', label: 'E-Books', icon: 'book' }
-      ]
+      id: "dashboard",
+      label: "Dashboard",
+      icon: "grid_view",
+      color: "text-gray-700",
     },
     {
-      id: 'test-portal',
-      label: 'Test Portal',
-      icon: 'assignment',
-      color: 'text-gray-700',
+      id: "offerings",
+      label: "Offerings",
+      icon: "inventory_2",
+      color: "text-gray-700",
       submenu: [
-        { id: 'tests', label: 'Tests', icon: 'quiz' }
-      ]
+        { id: "packages", label: "Digital Products", icon: "category" },
+        { id: "store", label: "Payment History", icon: "receipt_long" },
+        { id: "quick-links", label: "Quick Links", icon: "link" },
+        { id: "pdfs", label: "E-Books", icon: "book" },
+      ],
     },
     {
-      id: 'marketing',
-      label: 'Marketing',
-      icon: 'campaign',
-      color: 'text-gray-700',
-      submenu: [
-        { id: 'banners', label: 'Graphics', icon: 'image' },
-        { id: 'push-notifications', label: 'Notifications', icon: 'notifications_active' },
-        { id: 'referrals', label: 'Leads', icon: 'leaderboard' },
-        { id: 'coupons', label: 'Coupons', icon: 'confirmation_number' },
-        { id: 'buyers', label: 'Payment Pages', icon: 'payments' },
-        { id: 'blog', label: 'Testimonials', icon: 'rate_review' },
-        { id: 'messages', label: 'Whatsapp Sales', icon: 'chat' }
-      ]
+      id: "test-portal",
+      label: "Test Portal",
+      icon: "assignment",
+      color: "text-gray-700",
+      submenu: [{ id: "tests", label: "Tests", icon: "quiz" }],
     },
     {
-      id: 'support',
-      label: 'Support',
-      icon: 'help_outline',
-      color: 'text-gray-700',
+      id: "marketing",
+      label: "Marketing",
+      icon: "campaign",
+      color: "text-gray-700",
       submenu: [
-        { id: 'chat-support', label: 'Chat', icon: 'forum' }
-      ]
+        { id: "banners", label: "Graphics", icon: "image" },
+        {
+          id: "push-notifications",
+          label: "Notifications",
+          icon: "notifications_active",
+        },
+        { id: "referrals", label: "Leads", icon: "leaderboard" },
+        { id: "coupons", label: "Coupons", icon: "confirmation_number" },
+        { id: "buyers", label: "Payment Pages", icon: "payments" },
+        { id: "blog", label: "Testimonials", icon: "rate_review" },
+        { id: "messages", label: "Whatsapp Sales", icon: "chat" },
+      ],
     },
     {
-      id: 'settings',
-      label: 'Settings',
-      icon: 'settings',
-      color: 'text-gray-700',
-      submenu: [
-        { id: 'institute', label: 'Profile', icon: 'person' },
-        { id: 'students', label: 'Blocked Users', icon: 'block' },
-        { id: 'categories', label: 'Categories', icon: 'category' },
-        { id: 'settings', label: 'Moderators', icon: 'admin_panel_settings' }
-      ]
+      id: "support",
+      label: "Support",
+      icon: "help_outline",
+      color: "text-gray-700",
+      submenu: [{ id: "chat-support", label: "Chat", icon: "forum" }],
     },
     {
-      id: 'custom-sections',
-      label: 'Custom Sections',
-      icon: 'build',
-      color: 'text-gray-700',
+      id: "settings",
+      label: "Settings",
+      icon: "settings",
+      color: "text-gray-700",
       submenu: [
-        { id: 'exam-documents', label: 'Documents', icon: 'folder' }
-      ]
+        { id: "institute", label: "Profile", icon: "person" },
+        { id: "students", label: "Blocked Users", icon: "block" },
+        { id: "categories", label: "Categories", icon: "category" },
+        { id: "settings", label: "Moderators", icon: "admin_panel_settings" },
+      ],
+    },
+    {
+      id: "custom-sections",
+      label: "Custom Sections",
+      icon: "build",
+      color: "text-gray-700",
+      submenu: [{ id: "exam-documents", label: "Documents", icon: "folder" }],
     },
   ];
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredMenuItems = menuItems.map(item => {
-    if (item.label.toLowerCase().includes(searchQuery.toLowerCase())) return item;
-    if (item.submenu) {
-      const filteredSub = item.submenu.filter(sub => sub.label.toLowerCase().includes(searchQuery.toLowerCase()));
-      if (filteredSub.length > 0) return { ...item, submenu: filteredSub };
-    }
-    return null;
-  }).filter(Boolean) as MenuItem[];
+  const filteredMenuItems = menuItems
+    .map((item) => {
+      if (item.label.toLowerCase().includes(searchQuery.toLowerCase()))
+        return item;
+      if (item.submenu) {
+        const filteredSub = item.submenu.filter((sub) =>
+          sub.label.toLowerCase().includes(searchQuery.toLowerCase()),
+        );
+        if (filteredSub.length > 0) return { ...item, submenu: filteredSub };
+      }
+      return null;
+    })
+    .filter(Boolean) as MenuItem[];
 
   const handleLogout = () => {
-    localStorage.removeItem('isAdminAuthenticated');
+    localStorage.removeItem("isAdminAuthenticated");
     setAuth(false);
-    navigate('/admin-login');
+    navigate("/admin-login");
   };
 
   const renderContent = () => {
     const props = { showToast };
     switch (activeView) {
-      case 'dashboard': return <Dashboard {...props} />;
-      case 'categories': return <Categories {...props} />;
-      case 'misc': return <MiscSection {...props} />;
-      case 'students': return <Students {...props} />;
-      case 'buyers': return <Buyers {...props} />;
-      case 'tokens': return <Tokens {...props} />;
-      case 'coupons': return <Coupons {...props} />;
-      case 'store': return <Store {...props} />;
-      case 'institute': return <Institute {...props} />;
-      case 'questions': return <Questions {...props} />;
-      case 'question-bank': return <Questions {...props} view="bank" />;
-      case 'passages': return <Passages {...props} />;
-      case 'tests': return <Tests {...props} />;
-      case 'subjective-test': return <SubjectiveTest {...props} />;
-      case 'test-series': return <TestSeries {...props} />;
-      case 'all-reports': return <AllReports {...props} />;
-      case 'videos': return <Videos {...props} />;
-      case 'video-series': return <VideoSeries {...props} />;
-      case 'live-videos': return <LiveVideos {...props} />;
-      case 'live-sessions': return <LiveSessions />;
-      case 'pdfs': return <PDFs {...props} />;
-      case 'packages': return <Packages {...props} onCourseSelect={handleSelectCourseForContent} />;
-      case 'chat-support': return <ChatSupport {...props} />;
-      case 'messages': return <Messages {...props} />;
-      case 'blog': return <Blog {...props} />;
-      case 'settings': return <Settings {...props} />;
-      case 'banners': return <Banners {...props} />;
-      case 'referrals': return <Referrals {...props} />;
-      case 'courses': return <Courses {...props} />;
-      case 'course-content': return <CourseContentManager {...props} initialCourse={selectedCourseForContent} onClearInitialCourse={() => setSelectedCourseForContent(null)} onBack={() => setActiveView('packages')} />;
-      case 'live-class-scheduler': return <LiveClassScheduler {...props} />;
-      case 'subcourses': return <SubCourses {...props} />;
-      case 'subjects': return <Subjects {...props} />;
-      case 'topics': return <Topics {...props} />;
-      case 'instructions': return <Instructions {...props} />;
-      case 'exam-documents': return <ExamDocuments {...props} />;
-      case 'global-news': return <GlobalNews {...props} />;
-      case 'quick-links': return <QuickLinks {...props} />;
-      case 'push-notifications': return <PushNotifications {...props} />;
-      default: return <Dashboard {...props} />;
+      case "dashboard":
+        return <Dashboard {...props} />;
+      case "categories":
+        return <Categories {...props} />;
+      case "misc":
+        return <MiscSection {...props} />;
+      case "students":
+        return <Students {...props} />;
+      case "buyers":
+        return <Buyers {...props} />;
+      case "tokens":
+        return <Tokens {...props} />;
+      case "coupons":
+        return <Coupons {...props} />;
+      case "store":
+        return <Store {...props} />;
+      case "institute":
+        return <Institute {...props} />;
+      case "questions":
+        return <Questions {...props} />;
+      case "question-bank":
+        return <Questions {...props} view="bank" />;
+      case "passages":
+        return <Passages {...props} />;
+      case "tests":
+        return <Tests {...props} />;
+      case "subjective-test":
+        return <SubjectiveTest {...props} />;
+      case "test-series":
+        return <TestSeries {...props} />;
+      case "all-reports":
+        return <AllReports {...props} />;
+      case "videos":
+        return <Videos {...props} />;
+      case "video-series":
+        return <VideoSeries {...props} />;
+      case "live-videos":
+        return <LiveVideos {...props} />;
+      case "live-sessions":
+        return <LiveSessions />;
+      case "pdfs":
+        return <PDFs {...props} />;
+      case "packages":
+        return (
+          <Packages {...props} onCourseSelect={handleSelectCourseForContent} />
+        );
+      case "chat-support":
+        return <ChatSupport {...props} />;
+      case "messages":
+        return <Messages {...props} />;
+      case "blog":
+        return <Blog {...props} />;
+      case "settings":
+        return <Settings {...props} />;
+      case "banners":
+        return <Banners {...props} />;
+      case "referrals":
+        return <Referrals {...props} />;
+      case "courses":
+        return <Courses {...props} />;
+      case "course-content":
+        return (
+          <CourseContentManager
+            {...props}
+            initialCourse={selectedCourseForContent}
+            onClearInitialCourse={() => setSelectedCourseForContent(null)}
+            onBack={() => setActiveView("packages")}
+          />
+        );
+      case "live-class-scheduler":
+        return <LiveClassScheduler {...props} />;
+      case "subcourses":
+        return <SubCourses {...props} />;
+      case "subjects":
+        return <Subjects {...props} />;
+      case "topics":
+        return <Topics {...props} />;
+      case "instructions":
+        return <Instructions {...props} />;
+      case "exam-documents":
+        return <ExamDocuments {...props} />;
+      case "global-news":
+        return <GlobalNews {...props} />;
+      case "quick-links":
+        return <QuickLinks {...props} />;
+      case "push-notifications":
+        return <PushNotifications {...props} />;
+      default:
+        return <Dashboard {...props} />;
     }
   };
 
@@ -208,8 +308,12 @@ const AdminDashboard: React.FC<Props> = ({ setAuth }) => {
     <div className="flex h-screen bg-[#FDFDFD] overflow-hidden font-sans text-gray-800">
       {/* Toast Notification */}
       {toast && (
-        <div className={`fixed top-6 right-6 z-[200] px-6 py-4 rounded-2xl shadow-2xl animate-fade-in flex items-center gap-3 border ${toast.type === 'success' ? 'bg-white border-green-100 text-green-600' : 'bg-white border-red-100 text-red-600'}`}>
-          <span className="material-icons-outlined">{toast.type === 'success' ? 'check_circle' : 'error'}</span>
+        <div
+          className={`fixed top-6 right-6 z-[200] px-6 py-4 rounded-2xl shadow-2xl animate-fade-in flex items-center gap-3 border ${toast.type === "success" ? "bg-white border-green-100 text-green-600" : "bg-white border-red-100 text-red-600"}`}
+        >
+          <span className="material-icons-outlined">
+            {toast.type === "success" ? "check_circle" : "error"}
+          </span>
           <span className="text-sm font-bold">{toast.msg}</span>
         </div>
       )}
@@ -220,26 +324,40 @@ const AdminDashboard: React.FC<Props> = ({ setAuth }) => {
         onMouseLeave={() => setSidebarOpen(false)}
         className="bg-white border-r border-gray-100 flex flex-col z-50 shrink-0 relative will-change-[width,transform] transition-[width] duration-300 ease-[cubic-bezier(0.2,0,0,1)]"
         style={{
-          width: isSidebarOpen ? '280px' : '80px',
-          transform: 'translateZ(0)',
-          backfaceVisibility: 'hidden'
+          width: isSidebarOpen ? "280px" : "80px",
+          transform: "translateZ(0)",
+          backfaceVisibility: "hidden",
         }}
       >
         {/* Logo Section */}
-        <div className={`p-6 flex items-center bg-white shrink-0 transition-all duration-300 ${isSidebarOpen ? 'gap-3 px-8' : 'justify-center px-4'}`}>
+        <div
+          className={`p-6 flex items-center bg-white shrink-0 transition-all duration-300 ${isSidebarOpen ? "gap-3 px-8" : "justify-center px-4"}`}
+        >
           <div className="w-11 h-11 bg-[#1A237E] rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-indigo-100 transition-all duration-500 hover:scale-105 active:scale-95 cursor-pointer">
-            <span className="text-white font-black italic text-xl tracking-tighter">A1</span>
+            <span className="text-white font-black italic text-xl tracking-tighter">
+              A1
+            </span>
           </div>
-          <div className={`flex items-center gap-2 whitespace-nowrap transition-all duration-500 origin-left ${isSidebarOpen ? 'opacity-100 translate-x-0 w-auto' : 'opacity-0 -translate-x-4 w-0 overflow-hidden'}`}>
-            <span className="font-black text-xl tracking-tighter text-[#1A237E]">AONE</span>
-            <span className="text-xl font-medium text-[#1A237E]/80 tracking-tight">ADMIN</span>
+          <div
+            className={`flex items-center gap-2 whitespace-nowrap transition-all duration-500 origin-left ${isSidebarOpen ? "opacity-100 translate-x-0 w-auto" : "opacity-0 -translate-x-4 w-0 overflow-hidden"}`}
+          >
+            <span className="font-black text-xl tracking-tighter text-[#1A237E]">
+              AONE
+            </span>
+            <span className="text-xl font-medium text-[#1A237E]/80 tracking-tight">
+              ADMIN
+            </span>
           </div>
         </div>
 
         {/* Search Section */}
-        <div className={`px-5 mb-4 transition-all duration-500 ease-in-out ${isSidebarOpen ? 'opacity-100 max-h-20 translate-y-0' : 'opacity-0 max-h-0 -translate-y-4 overflow-hidden'}`}>
+        <div
+          className={`px-5 mb-4 transition-all duration-500 ease-in-out ${isSidebarOpen ? "opacity-100 max-h-20 translate-y-0" : "opacity-0 max-h-0 -translate-y-4 overflow-hidden"}`}
+        >
           <div className="relative flex items-center bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5 transition-all group focus-within:ring-1 focus-within:ring-gray-200 focus-within:bg-white shadow-sm">
-            <span className="material-symbols-outlined text-gray-400 text-[18px] mr-2">search</span>
+            <span className="material-symbols-outlined text-gray-400 text-[18px] mr-2">
+              search
+            </span>
             <input
               type="text"
               placeholder="Search shortcuts..."
@@ -256,8 +374,12 @@ const AdminDashboard: React.FC<Props> = ({ setAuth }) => {
             <div
               key={item.id}
               className="mb-0.5"
-              onMouseEnter={() => item.submenu && isSidebarOpen && setExpandedMenu(item.id)}
-              onMouseLeave={() => item.submenu && isSidebarOpen && setExpandedMenu(null)}
+              onMouseEnter={() =>
+                item.submenu && isSidebarOpen && setExpandedMenu(item.id)
+              }
+              onMouseLeave={() =>
+                item.submenu && isSidebarOpen && setExpandedMenu(null)
+              }
             >
               <button
                 onClick={() => {
@@ -265,33 +387,56 @@ const AdminDashboard: React.FC<Props> = ({ setAuth }) => {
                     setActiveView(item.id as AdminView);
                   }
                 }}
-                className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-300 group relative active:scale-95 ${expandedMenu === item.id || (activeView === item.id && !item.submenu) ? 'text-gray-950 bg-gray-50/50 shadow-sm' : 'text-gray-400 hover:bg-gray-50/80 hover:text-gray-900'
-                  }`}
+                className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-xl transition-all duration-300 group relative active:scale-95 ${
+                  expandedMenu === item.id ||
+                  (activeView === item.id && !item.submenu)
+                    ? "text-gray-950 bg-gray-50/50 shadow-sm"
+                    : "text-gray-400 hover:bg-gray-50/80 hover:text-gray-900"
+                }`}
               >
-                <div className={`flex items-center justify-center transition-all duration-500 ${isSidebarOpen ? '' : 'w-full'} ${expandedMenu === item.id || activeView === item.id ? 'text-gray-950 scale-110' : 'group-hover:text-gray-700'}`}>
-                  <span className="material-symbols-outlined text-[20px] font-light">{item.icon}</span>
+                <div
+                  className={`flex items-center justify-center transition-all duration-500 ${isSidebarOpen ? "" : "w-full"} ${expandedMenu === item.id || activeView === item.id ? "text-gray-950 scale-110" : "group-hover:text-gray-700"}`}
+                >
+                  <span className="material-symbols-outlined text-[20px] font-light">
+                    {item.icon}
+                  </span>
                 </div>
-                <div className={`flex items-center flex-1 transition-all duration-500 origin-left ${isSidebarOpen ? 'opacity-100 translate-x-0 w-auto' : 'opacity-0 -translate-x-4 w-0 overflow-hidden'}`}>
-                  <span className={`text-[14px] tracking-tight truncate transition-all duration-500 ${expandedMenu === item.id || (activeView === item.id && !item.submenu) ? 'font-semibold text-gray-900' : 'font-medium group-hover:translate-x-1'
-                    }`}>{item.label}</span>
+                <div
+                  className={`flex items-center flex-1 transition-all duration-500 origin-left ${isSidebarOpen ? "opacity-100 translate-x-0 w-auto" : "opacity-0 -translate-x-4 w-0 overflow-hidden"}`}
+                >
+                  <span
+                    className={`text-[14px] tracking-tight truncate transition-all duration-500 ${
+                      expandedMenu === item.id ||
+                      (activeView === item.id && !item.submenu)
+                        ? "font-semibold text-gray-900"
+                        : "font-medium group-hover:translate-x-1"
+                    }`}
+                  >
+                    {item.label}
+                  </span>
                   {item.submenu && (
-                    <span className={`material-symbols-outlined text-gray-300 text-[18px] ml-auto transition-all duration-500 ${expandedMenu === item.id ? 'rotate-180 text-gray-800' : 'rotate-0 group-hover:text-gray-500'}`}>
+                    <span
+                      className={`material-symbols-outlined text-gray-300 text-[18px] ml-auto transition-all duration-500 ${expandedMenu === item.id ? "rotate-180 text-gray-800" : "rotate-0 group-hover:text-gray-500"}`}
+                    >
                       expand_more
                     </span>
                   )}
                 </div>
               </button>
 
-              <div className={`overflow-hidden transition-all duration-500 ease-in-out ${item.submenu && expandedMenu === item.id && isSidebarOpen ? 'max-h-96 opacity-100 mt-1 mb-2' : 'max-h-0 opacity-0'}`}>
+              <div
+                className={`overflow-hidden transition-all duration-500 ease-in-out ${item.submenu && expandedMenu === item.id && isSidebarOpen ? "max-h-96 opacity-100 mt-1 mb-2" : "max-h-0 opacity-0"}`}
+              >
                 <div className="ml-6 border-l border-gray-100 flex flex-col pl-2 space-y-0.5">
                   {item.submenu?.map((subitem) => (
                     <button
                       key={subitem.id}
                       onClick={() => setActiveView(subitem.id)}
-                      className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-[13px] transition-all duration-300 text-left hover:translate-x-1 ${activeView === subitem.id
-                        ? 'text-gray-950 font-bold bg-gray-50/30'
-                        : 'text-gray-400 hover:text-gray-900 hover:bg-gray-50/50'
-                        }`}
+                      className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-[13px] transition-all duration-300 text-left hover:translate-x-1 ${
+                        activeView === subitem.id
+                          ? "text-gray-950 font-bold bg-gray-50/30"
+                          : "text-gray-400 hover:text-gray-900 hover:bg-gray-50/50"
+                      }`}
                     >
                       <span className="truncate">{subitem.label}</span>
                     </button>
@@ -303,11 +448,22 @@ const AdminDashboard: React.FC<Props> = ({ setAuth }) => {
         </nav>
 
         <div className="p-4 border-t border-gray-100 shrink-0">
-          <button onClick={handleLogout} className="w-full flex items-center gap-4 px-4 py-3 text-gray-400 hover:text-gray-950 hover:bg-gray-50/50 rounded-2xl transition-all duration-300 group overflow-hidden">
-            <div className={`flex items-center justify-center transition-all duration-300 ${isSidebarOpen ? '' : 'w-full'}`}>
-              <span className="material-symbols-outlined text-[20px] font-light">logout</span>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-4 px-4 py-3 text-gray-400 hover:text-gray-950 hover:bg-gray-50/50 rounded-2xl transition-all duration-300 group overflow-hidden"
+          >
+            <div
+              className={`flex items-center justify-center transition-all duration-300 ${isSidebarOpen ? "" : "w-full"}`}
+            >
+              <span className="material-symbols-outlined text-[20px] font-light">
+                logout
+              </span>
             </div>
-            <span className={`text-[14px] font-bold transition-all duration-500 origin-left whitespace-nowrap ${isSidebarOpen ? 'opacity-100 translate-x-0 w-auto' : 'opacity-0 -translate-x-4 w-0'}`}>Sign Out</span>
+            <span
+              className={`text-[14px] font-bold transition-all duration-500 origin-left whitespace-nowrap ${isSidebarOpen ? "opacity-100 translate-x-0 w-auto" : "opacity-0 -translate-x-4 w-0"}`}
+            >
+              Sign Out
+            </span>
           </button>
         </div>
       </aside>
@@ -317,19 +473,29 @@ const AdminDashboard: React.FC<Props> = ({ setAuth }) => {
         <header className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0 z-40">
           <div className="flex flex-col">
             <h1 className="text-[14px] font-black text-[#1e293b] tracking-widest uppercase">
-              {activeView === 'dashboard' ? 'Dashboard' :
-                activeView === 'course-content' ? 'Digital Products' :
-                  menuItems.find(m => m.id === activeView)?.label ||
-                  menuItems.flatMap(m => m.submenu || []).find(s => s.id === activeView)?.label ||
-                  'Admin'}
+              {activeView === "dashboard"
+                ? "Dashboard"
+                : activeView === "course-content"
+                  ? "Digital Products"
+                  : menuItems.find((m) => m.id === activeView)?.label ||
+                    menuItems
+                      .flatMap((m) => m.submenu || [])
+                      .find((s) => s.id === activeView)?.label ||
+                    "Admin"}
             </h1>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="text-[10px] font-bold text-gray-300 uppercase tracking-wider">Management Root</span>
+              <span className="text-[10px] font-bold text-gray-300 uppercase tracking-wider">
+                Management Root
+              </span>
               <span className="text-[10px] font-bold text-gray-200">/</span>
               <span className="text-[10px] font-bold text-gray-300 uppercase tracking-wider">
-                {activeView === 'dashboard' ? 'Dashboard' :
-                  activeView === 'course-content' ? 'Offerings' :
-                    menuItems.find(m => m.submenu?.some(s => s.id === activeView))?.label || 'Dashboard'}
+                {activeView === "dashboard"
+                  ? "Dashboard"
+                  : activeView === "course-content"
+                    ? "Offerings"
+                    : menuItems.find((m) =>
+                        m.submenu?.some((s) => s.id === activeView),
+                      )?.label || "Dashboard"}
               </span>
             </div>
           </div>
@@ -337,24 +503,30 @@ const AdminDashboard: React.FC<Props> = ({ setAuth }) => {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-4 cursor-pointer group px-2 py-1.5 rounded-2xl transition-all">
               <div className="flex flex-col items-end">
-                <span className="text-[13px] font-black text-[#1e293b] leading-none mb-1">Er. Deepak Sir</span>
-                <span className="text-[10px] font-black text-green-500 uppercase tracking-widest leading-none">Master Admin</span>
+                <span className="text-[13px] font-black text-[#1e293b] leading-none mb-1">
+                  Er. Deepak Sir
+                </span>
+                <span className="text-[10px] font-black text-green-500 uppercase tracking-widest leading-none">
+                  Master Admin
+                </span>
               </div>
               <div className="relative">
                 <div className="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center overflow-hidden border border-gray-100 shadow-sm group-hover:border-gray-200 transition-all">
-                  <span className="material-symbols-outlined text-gray-400 text-[22px]">person</span>
+                  <span className="material-symbols-outlined text-gray-400 text-[22px]">
+                    person
+                  </span>
                 </div>
                 <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full shadow-sm"></div>
               </div>
-              <span className="material-symbols-outlined text-gray-400 text-[18px] transition-transform group-hover:translate-y-0.5">expand_more</span>
+              <span className="material-symbols-outlined text-gray-400 text-[18px] transition-transform group-hover:translate-y-0.5">
+                expand_more
+              </span>
             </div>
           </div>
         </header>
 
         <div className="flex-1 overflow-y-auto p-6 lg:p-8 bg-[#fcfcfc] min-h-0">
-          <div className="h-full">
-            {renderContent()}
-          </div>
+          <div className="h-full">{renderContent()}</div>
         </div>
       </main>
     </div>
