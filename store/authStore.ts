@@ -43,7 +43,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     },
     clearAuth: async () => {
         try {
-            await fetch('/api/logout', { method: 'POST' });
+            await fetch('https://testmode-7arz.onrender.com/api/logout', { method: 'POST' });
         } catch (e) { }
         localStorage.removeItem('isStudentAuthenticated');
         localStorage.removeItem('studentData');
@@ -52,7 +52,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     },
     checkAuth: async () => {
         try {
-            const response = await fetch('/api/me');
+            const response = await fetch('https://testmode-7arz.onrender.com/api/me');
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem('isStudentAuthenticated', 'true');
